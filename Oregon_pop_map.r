@@ -61,7 +61,7 @@ if (width > height) {
   w_ratio <-width/height
 }
 #convert to raster then matrix
-size = 2000
+size = 1000
 oregon_rast <- st_rasterize(st_oregon,
                             nx = floor(size * w_ratio),
                             ny = floor(size * h_ratio)) 
@@ -73,13 +73,16 @@ mat <- matrix(oregon_rast$population,
 hg <- met.brewer("Hiroshige")
 swatchplot(hg)
 
-texture <- grDevices::colorRampPalette(hg)(256)
+texture <- grDevices::colorRampPalette(hg, bias = 1)(256)
 swatchplot(texture)
 #Plot 3d render
 
 mat %>% 
   height_shade(texture = texture) %>% 
   plot_3d(heightmap = mat,
-            zscale = 40,
+            zscale = 30,
             solid = FALSE,
             shadowdepth = 0)
+
+render_camera(theta = -20, phi = 30)
+
