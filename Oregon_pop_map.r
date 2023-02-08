@@ -6,6 +6,7 @@ library(rayshader)
 library(MetBrewer)
 library(colorspace)
 library(dplyr)
+library(rayrender)
 
 # load geopackage data
 
@@ -76,13 +77,18 @@ swatchplot(hg)
 texture <- grDevices::colorRampPalette(hg, bias = 1)(256)
 swatchplot(texture)
 #Plot 3d render
+rgl::rgl.close()
 
 mat %>% 
   height_shade(texture = texture) %>% 
   plot_3d(heightmap = mat,
-            zscale = 30,
+            zscale = 25,
             solid = FALSE,
             shadowdepth = 0)
 
-render_camera(theta = -20, phi = 30)
+render_camera(theta = -20, phi = 30, zoom = .8)
+
+render_highquality(
+    filename = "images/testplot.png"
+)
 
