@@ -8,6 +8,10 @@ library(colorspace)
 library(dplyr)
 library(rayrender)
 
+#installing rayshader direct from github as CRAN was outdated.
+#install.packages("devtools")
+#devtools::install_github("tylermorganwall/rayshader")
+
 # load geopackage data
 
 data <- st_read("C:/Users/kanem/Documents/Pop_Mapping/data/kontur_population_US_20220630.gpkg")
@@ -41,6 +45,7 @@ bottom_left <- st_point(c(bb[["xmin"]], bb[["ymin"]])) %>%
 
 bottom_right <- st_point(c(bb[["xmax"]],bb[["ymin"]])) %>% 
   st_sfc(crs = st_crs(data))
+
 #Testing Plot
 oregon %>% 
   ggplot()+
@@ -48,6 +53,7 @@ oregon %>%
   geom_sf(data = bottom_left)+
   geom_sf(data = bottom_right, color = "red" )
 
+#Determing height and width
 width <- st_distance(bottom_left, bottom_right)
 
 top_left <- st_point(c(bb[["xmin"]], bb[["ymax"]])) %>% 
@@ -69,26 +75,38 @@ oregon_rast <- st_rasterize(st_oregon,
 mat <- matrix(oregon_rast$population,
               nrow = floor(size * w_ratio),
               ncol = floor(size * h_ratio))
+
+
 # Color Palette
 
-hg <- met.brewer("Hiroshige")
+hg <- met.brewer("Pillement")
 swatchplot(hg)
 
 texture <- grDevices::colorRampPalette(hg, bias = 1)(256)
 swatchplot(texture)
+
 #Plot 3d render
-rgl::rgl.close()
 
 mat %>% 
   height_shade(texture = texture) %>% 
   plot_3d(heightmap = mat,
-            zscale = 25,
-            solid = FALSE,
-            shadowdepth = 0)
+          zscale = 15,
+          solid = FALSE,
+          shadowdepth = 0)
 
-render_camera(theta = -20, phi = 30, zoom = .8)
+render_camera(theta = 20, phi = 22, zoom = .8)
 
+#Output new high res png
 render_highquality(
-    filename = "images/testplot.png"
+  filename = "images/test_plot2.png",
+  interactive = FALSE,
+  lightdirection = 300,
+  lightaltitude = c(20,80),
+  lightcolor = c(hg[2],"black"),
+  lightintensity = c(1200,200),
+  
+  
 )
 
+#Close rgl
+rgl::rgl.close()
