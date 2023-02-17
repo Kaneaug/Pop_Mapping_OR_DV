@@ -1,7 +1,9 @@
-Data Visualization project that maps the population density for the state of Oregon. Project contains a 3d interactive map 
+Data Visualization project that maps the population density for the state of Oregon and California. Project contains a 3d interactive map 
 and highresolution png that can be used for business intelligence, demographic scouting and marketing projects. Built using the reyshader package and the Kontur PD Dataset.
 
 ![plot_for_git](https://user-images.githubusercontent.com/114702251/217958315-d428fb2d-bfe1-473a-8917-bec1d0b37813.png)
+![gitcali](https://user-images.githubusercontent.com/114702251/219807388-f30025ee-a498-4eff-bb20-7c18ccb8808f.png)
+
 
 Sample Views.
 
